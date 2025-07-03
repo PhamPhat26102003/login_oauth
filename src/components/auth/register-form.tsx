@@ -3,23 +3,33 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, LogIn, Mail, User, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 interface RegisterFormProps {
-  onLoginClick?: () => void;
   onClose?: () => void;
 }
 
-export function RegisterForm({ onLoginClick, onClose }: RegisterFormProps) {
+export function RegisterForm({ onClose }: RegisterFormProps) {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
-      `Username: ${username}\nEmail: ${email}\nPassword: ${password}\n(Chưa kết nối backend)`
+    // Lưu user vào localStorage (chỉ demo, không bảo mật)
+    localStorage.setItem(
+      "demo-user",
+      JSON.stringify({ username, email, password })
     );
+    alert("Đăng ký thành công! Vui lòng đăng nhập.");
+    // Chuyển hướng sang trang đăng nhập
+    router.push("/login");
+  };
+
+  const handleLoginClick = () => {
+    router.push("/login");
   };
 
   return (
@@ -74,7 +84,7 @@ export function RegisterForm({ onLoginClick, onClose }: RegisterFormProps) {
             variant="outline"
             type="button"
             className="inline-flex items-center gap-1"
-            onClick={onLoginClick}
+            onClick={handleLoginClick}
           >
             <LogIn className="w-4 h-4" />
             Đăng nhập

@@ -18,9 +18,17 @@ export function LoginForm({ onClose }: LoginFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(
-      `Username: ${username}\nPassword: ${password}\n(Chưa kết nối backend)`
-    );
+    const res = await signIn("credentials", {
+      redirect: false,
+      username,
+      password,
+      callbackUrl: "/",
+    });
+    if (res?.ok) {
+      router.push("/");
+    } else {
+      alert("Đăng nhập thất bại!");
+    }
   };
 
   const handleSocialLogin = async (provider: "google" | "facebook") => {
